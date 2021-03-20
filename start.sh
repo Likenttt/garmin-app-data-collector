@@ -1,3 +1,5 @@
-kill $(ps -ef | grep "jump-data-reciever-0.0.1-SNAPSHOT.jar" | grep -v grep | awk '{print $2}')
+rm -rf target
+git pull
 mvn package
+kill `ps -ef | grep jump-data-reciever-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}'`
 nohup java -jar target/jump-data-reciever-0.0.1-SNAPSHOT.jar &!
