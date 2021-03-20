@@ -16,4 +16,8 @@ public class AccelData implements Serializable {
     private List<Double> x;
     private List<Double> y;
     private List<Double> z;
+    /**
+     * profile
+     */
+    private String p;
 }
