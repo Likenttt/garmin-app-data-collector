@@ -23,6 +23,7 @@ public class UploadController {
 
     /**
      * curl -H "content-type:application/json"  localhost:6666/upload -XPOST -d '{"x":[1,2],"y":[1,2],"z":[1,24],"p":"jksjkd"}'
+     *
      * @param data
      * @return
      */
@@ -81,9 +82,15 @@ public class UploadController {
         }
         System.out.printf("%s's data upload ends", profileKey);
         System.out.println();
-        System.out.println(profileKey + " x axis :" + xDataMap.get(profileKey));
-        System.out.println(profileKey + " y axis :" + yDataMap.get(profileKey));
-        System.out.println(profileKey + " z axis :" + zDataMap.get(profileKey));
+        String date = new Date(System.currentTimeMillis()).toString();
+        System.out.println("-----------------" + "At " + date + "-----------------");
+        System.out.println(date + profileKey + " x axis :" + xDataMap.get(profileKey));
+        System.out.println(date + profileKey + " y axis :" + yDataMap.get(profileKey));
+        System.out.println(date + profileKey + " z axis :" + zDataMap.get(profileKey));
+        System.out.println("-----------------" + "At " + date + "-----------------");
+        xDataMap.remove(profileKey);
+        yDataMap.remove(profileKey);
+        zDataMap.remove(profileKey);
         return "reset";
     }
 }
