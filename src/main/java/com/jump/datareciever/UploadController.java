@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: chuanyi@88.com
@@ -18,57 +15,75 @@ import java.util.Map;
 @RestController
 public class UploadController {
 
-    private Map<String,List<List<Double>>> xDataMap = new HashMap<>();
-    private Map<String,List<List<Double>>> yDataMap = new HashMap<>();
-    private Map<String,List<List<Double>>> zDataMap = new HashMap<>();
+    private Map<String, List<List<Double>>> xDataMap = new HashMap<>();
+    private Map<String, List<List<Double>>> yDataMap = new HashMap<>();
+    private Map<String, List<List<Double>>> zDataMap = new HashMap<>();
 
     private int batch = 0;
 
+    /**
+     * curl -H "content-type:application/json"  localhost:6666/upload -XPOST -d '{"x":[1,2],"y":[1,2],"z":[1,24],"p":"jksjkd"}'
+     * @param data
+     * @return
+     */
     @PostMapping("/upload")
-    public int uploadData(@RequestBody AccelData data){
+    public int uploadData(@RequestBody AccelData data) {
         ++batch;
+        String profileKey = data.getP();
         System.out.printf("------Batch %d Data receiving------%n", batch);
-        xDataMap.computeIfPresent(data.getP(), (k,v) ->{
+        xDataMap.computeIfPresent(data.getP(), (k, v) -> {
             v.add(data.getX());
             return v;
         });
-        xDataMap.putIfAbsent(data.getP(), Arrays.asList(data.getX()));
+        putIfAbsent(xDataMap, data.getX(), profileKey);
 
-        yDataMap.computeIfPresent(data.getP(), (k,v) ->{
+        yDataMap.computeIfPresent(profileKey, (k, v) -> {
             v.add(data.getY());
             return v;
         });
-        yDataMap.putIfAbsent(data.getP(), Arrays.asList(data.getY()));
+        putIfAbsent(yDataMap, data.getY(), profileKey);
 
-        zDataMap.computeIfPresent(data.getP(), (k,v) ->{
+        zDataMap.computeIfPresent(profileKey, (k, v) -> {
             v.add(data.getZ());
             return v;
         });
-        zDataMap.putIfAbsent(data.getP(), Arrays.asList(data.getZ()));
+        putIfAbsent(zDataMap, data.getZ(), profileKey);
 
         System.out.printf("------Batch %d Data received------%n", batch);
         return 0;
     }
 
+    private void putIfAbsent(Map<String, List<List<Double>>> dataMap, List<Double> axis, String profileKey) {
+        if (!dataMap.containsKey(profileKey)) {
+            List<List<Double>> lists = new ArrayList<>();
+            lists.add(axis);
+            dataMap.put(profileKey, lists);
+        }
+    }
+
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "Do you jump today?";
     }
 
     @PostMapping("/start")
-    public String start(@RequestBody AccelData data){
-        System.out.printf("%s's data upload starts",data.getP());
+    public String start(@RequestBody AccelData data) {
+        System.out.printf("%s's data upload starts", data.getP());
+        System.out.println();
         return "start";
     }
+
     @PostMapping("/reset")
-    public String reset(@RequestBody AccelData data){
-        if (!xDataMap.containsKey(data.getP())){
+    public String reset(@RequestBody AccelData data) {
+        String profileKey = data.getP();
+        if (!xDataMap.containsKey(profileKey)) {
             return "not exist";
         }
-        System.out.printf("%s's data upload ends",data.getP());
-        System.out.println(data.getP()+" x axis :"+xDataMap.get(data.getP()));
-        System.out.println(data.getP()+" y axis :"+yDataMap.get(data.getP()));
-        System.out.println(data.getP()+" z axis :"+zDataMap.get(data.getP()));
+        System.out.printf("%s's data upload ends", profileKey);
+        System.out.println();
+        System.out.println(profileKey + " x axis :" + xDataMap.get(profileKey));
+        System.out.println(profileKey + " y axis :" + yDataMap.get(profileKey));
+        System.out.println(profileKey + " z axis :" + zDataMap.get(profileKey));
         return "reset";
     }
 }
