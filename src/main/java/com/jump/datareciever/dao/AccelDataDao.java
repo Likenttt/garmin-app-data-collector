@@ -31,7 +31,7 @@ public class AccelDataDao {
         dataCollection.setBatchCount(xLists.size());
         dataCollection.setX(xLists);
         dataCollection.setY(yLists);
-        dataCollection.setY(zLists);
+        dataCollection.setZ(zLists);
         dataCollection.setMark(uuid + profileKey);
         String redisKey = KEY_PREFIX + uuid + ":" + profileKey;
         System.out.println("saving value for redis key:    " + redisKey);
