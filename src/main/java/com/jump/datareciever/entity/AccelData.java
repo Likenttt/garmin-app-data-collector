@@ -1,4 +1,4 @@
-package com.jump.datareciever;
+package com.jump.datareciever.entity;
 
 import lombok.Data;
 

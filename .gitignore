@@ -37,3 +37,4 @@ src/.DS_Store
 src/main/.DS_Store
 .mvn/*
 nohup.out
+application.properties

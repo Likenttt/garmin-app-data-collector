@@ -1,5 +1,8 @@
-package com.jump.datareciever;
+package com.jump.datareciever.controller;
 
+import com.jump.datareciever.dao.AccelDataDao;
+import com.jump.datareciever.entity.AccelData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +18,12 @@ import java.util.*;
 @RestController
 public class UploadController {
 
-    private Map<String, List<List<Double>>> xDataMap = new HashMap<>();
-    private Map<String, List<List<Double>>> yDataMap = new HashMap<>();
-    private Map<String, List<List<Double>>> zDataMap = new HashMap<>();
+    private final Map<String, List<List<Double>>> xDataMap = new HashMap<>();
+    private final Map<String, List<List<Double>>> yDataMap = new HashMap<>();
+    private final Map<String, List<List<Double>>> zDataMap = new HashMap<>();
+
+    @Autowired
+    private AccelDataDao accelDataDao;
 
     private int batch = 0;
 
@@ -80,14 +86,13 @@ public class UploadController {
         if (!xDataMap.containsKey(profileKey)) {
             return "not exist";
         }
-        System.out.printf("%s's data upload ends", profileKey);
+        String uuid = UUID.randomUUID().toString().replace("-","");
+        System.out.printf("%s's data upload ends", uuid + profileKey);
         System.out.println();
         String date = new Date(System.currentTimeMillis()).toString();
-        System.out.println("-----------------" + "At " + date + "-----------------");
-        System.out.println(date + profileKey + " x axis :" + xDataMap.get(profileKey));
-        System.out.println(date + profileKey + " y axis :" + yDataMap.get(profileKey));
-        System.out.println(date + profileKey + " z axis :" + zDataMap.get(profileKey));
-        System.out.println("-----------------" + "At " + date + "-----------------");
+        System.out.println(" -----------------" + "data saving start At " + date + "-----------------");
+        accelDataDao.saveAccelDataCollection(uuid,profileKey,xDataMap,yDataMap,zDataMap);
+        System.out.println("-----------------" + "data saved At " + date + "-----------------");
         xDataMap.remove(profileKey);
         yDataMap.remove(profileKey);
         zDataMap.remove(profileKey);
