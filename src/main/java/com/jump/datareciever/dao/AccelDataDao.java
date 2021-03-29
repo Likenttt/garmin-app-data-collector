@@ -23,7 +23,7 @@ public class AccelDataDao {
     @Autowired
     private RedisTemplate<String, String> stringRedisTemplate;
 
-    public void saveAccelDataCollection(String uuid, String profileKey, Map<String, List<List<Double>>> xDataMap, Map<String, List<List<Double>>> yDataMap, Map<String, List<List<Double>>> zDataMap) {
+    public void saveAccelDataCollection(int count, String uuid, String profileKey, Map<String, List<List<Double>>> xDataMap, Map<String, List<List<Double>>> yDataMap, Map<String, List<List<Double>>> zDataMap) {
         DataCollection dataCollection = new DataCollection();
         List<List<Double>> xLists = xDataMap.get(profileKey);
         List<List<Double>> yLists = yDataMap.get(profileKey);
@@ -33,6 +33,7 @@ public class AccelDataDao {
         dataCollection.setY(yLists);
         dataCollection.setZ(zLists);
         dataCollection.setMark(uuid + profileKey);
+        dataCollection.setCount(count);
         String redisKey = KEY_PREFIX + uuid + ":" + profileKey;
         System.out.println("saving value for redis key:    " + redisKey);
         stringRedisTemplate.opsForValue().set(redisKey, gson.toJson(dataCollection));

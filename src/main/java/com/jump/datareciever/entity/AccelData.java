@@ -20,4 +20,5 @@ public class AccelData implements Serializable {
      * profile
      */
     private String p;
+    private int count;
 }

@@ -91,7 +91,7 @@ public class UploadController {
         System.out.println();
         String date = new Date(System.currentTimeMillis()).toString();
         System.out.println(" -----------------" + "data saving start At " + date + "-----------------");
-        accelDataDao.saveAccelDataCollection(uuid,profileKey,xDataMap,yDataMap,zDataMap);
+        accelDataDao.saveAccelDataCollection(data.getCount(),uuid,profileKey,xDataMap,yDataMap,zDataMap);
         System.out.println("-----------------" + "data saved At " + date + "-----------------");
         xDataMap.remove(profileKey);
         yDataMap.remove(profileKey);

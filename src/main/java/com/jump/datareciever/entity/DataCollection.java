@@ -16,6 +16,7 @@ public class DataCollection implements Serializable {
     private static final long serialVersionUID = -4848531928419020951L;
     private String mark;
     private int batchCount;
+    private int count;
     private List<List<Double>> x = new ArrayList<>();
     private List<List<Double>> y = new ArrayList<>();
     private List<List<Double>> z = new ArrayList<>();

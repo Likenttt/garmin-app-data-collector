@@ -1,5 +1,6 @@
 package com.jump.datareciever;
 
+import com.jump.datareciever.dao.AccelDataDao;
 import com.jump.datareciever.entity.AccelData;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ public class RedisTest {
     @Autowired
     private RedisTemplate<String, String> strRedisTemplate;
     @Autowired
+    private AccelDataDao accelDataDao;
+    @Autowired
     private RedisTemplate<String, Serializable> serializableRedisTemplate;
 
     @Test
@@ -28,17 +31,22 @@ public class RedisTest {
     }
 
     @Test
-    public void testSerializable() {
-        AccelData accelData = new AccelData();
-        accelData.setP("nihao");
-        accelData.setX(Lists.newArrayList(12.0));
-        accelData.setY(Lists.newArrayList(12.0));
-        accelData.setZ(Lists.newArrayList(12.0));
+    public void testGet(){
 
-        serializableRedisTemplate.opsForValue().set("xxx:nihao", accelData);
-        AccelData accelData1 = (AccelData) serializableRedisTemplate.opsForValue().get("xxx:nihao");
-        System.out.println(accelData1);
     }
+
+//    @Test
+//    public void testSerializable() {
+//        AccelData accelData = new AccelData();
+//        accelData.setP("nihao");
+//        accelData.setX(Lists.newArrayList(12.0));
+//        accelData.setY(Lists.newArrayList(12.0));
+//        accelData.setZ(Lists.newArrayList(12.0));
+//
+//        serializableRedisTemplate.opsForValue().set("xxx:nihao", accelData);
+//        AccelData accelData1 = (AccelData) serializableRedisTemplate.opsForValue().get("xxx:nihao");
+//        System.out.println(accelData1);
+//    }
 
 
 
