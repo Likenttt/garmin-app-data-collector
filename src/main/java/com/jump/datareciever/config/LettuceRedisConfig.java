@@ -8,6 +8,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: chuanyi@88.com
@@ -22,6 +24,7 @@ class LettuceRedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setConnectionFactory(connectionFactory);
+//        connectionFactory.setShutdownTimeout(10000_000);
         return redisTemplate;
     }
 }

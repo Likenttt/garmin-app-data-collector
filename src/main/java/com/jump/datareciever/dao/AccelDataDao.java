@@ -18,7 +18,8 @@ import java.util.Map;
  */
 @Service
 public class AccelDataDao {
-    private final String KEY_PREFIX = "connectiq;accel:axes:";
+    private final String ACCEL_KEY_PREFIX = "connectiq;accel:axes:";
+    private final String COUNT_KEY_PREFIX = "connectiq;count:";
     private final Gson gson = new Gson();
     @Autowired
     private RedisTemplate<String, String> stringRedisTemplate;
@@ -34,9 +35,12 @@ public class AccelDataDao {
         dataCollection.setZ(zLists);
         dataCollection.setMark(uuid + profileKey);
         dataCollection.setCount(count);
-        String redisKey = KEY_PREFIX + uuid + ":" + profileKey;
-        System.out.println("saving value for redis key:    " + redisKey);
-        stringRedisTemplate.opsForValue().set(redisKey, gson.toJson(dataCollection));
+        String accelRedisKey = ACCEL_KEY_PREFIX + uuid + ":" + profileKey;
+        String countRedisKey = COUNT_KEY_PREFIX + uuid + ":" + profileKey+"_"+count;
+        System.out.println("saving value for redis key:    " + accelRedisKey);
+        System.out.println("saving value for count key:    " + countRedisKey);
+        stringRedisTemplate.opsForValue().set(accelRedisKey, gson.toJson(dataCollection));
+        stringRedisTemplate.opsForValue().set(countRedisKey, String.valueOf(count));
     }
 
     public DataCollection get(String key) {
