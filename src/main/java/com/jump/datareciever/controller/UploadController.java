@@ -84,6 +84,7 @@ public class UploadController {
     public String reset(@RequestBody AccelData data) {
         String profileKey = data.getP();
         if (!xDataMap.containsKey(profileKey)) {
+            System.out.println(profileKey + " key not exist");
             return "not exist";
         }
         String uuid = UUID.randomUUID().toString().replace("-","");
